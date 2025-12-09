@@ -1,0 +1,15 @@
+#!name=Locket Gold (Fixed)
+#!desc=Unlock Locket Gold - Clean Version
+#!system=ios
+
+[Script]
+# Xử lý phản hồi (Response) - Quan trọng nhất
+# Lưu ý: Sửa 'Locket_Gold_Fixed.js' thành đường dẫn thực tế file bạn lưu trong máy hoặc link GitHub của bạn.
+Locket_Unlock = type=http-response, pattern=^https:\/\/api\.revenuecat\.com\/.+\/(receipts$|subscribers\/[^/]+$), script-path=https://raw.githubusercontent.com/nobitadev03/Locket_Gold/refs/heads/main/Locket_Gold_Fixed.js, requires-body=true, timeout=60
+
+# Xóa Header ETag (Để đảm bảo App luôn tải dữ liệu mới đã hack)
+# Mình dùng script inline (viết trực tiếp) để bạn đỡ phải tạo thêm 1 file JS nữa.
+Locket_CleanHeader = type=http-request, pattern=^https:\/\/api\.revenuecat\.com\/.+\/(receipts|subscribers), script-path=https://raw.githubusercontent.com/DungHoang120401/Nobita/refs/heads/main/Scripts/LKG_delete_header.js, timeout=60
+
+[MITM]
+hostname = api.revenuecat.com
