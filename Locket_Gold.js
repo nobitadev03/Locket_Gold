@@ -1,41 +1,33 @@
-/*
-  Locket Gold Unlock - V2 (Force Enable)
-  Updated: 2025
-*/
+// ========= ID ========= //
+const mapping = {
+  '%E8%BD%A6%E7%A5%A8%E7%A5%A8': ['vip+watch_vip'],
+  'Locket': ['Gold']
+};
+// =========   Phần cố định  ========= // 
+// =========  @Ohoang7 ========= // 
+var ua=$request.headers["User-Agent"]||$request.headers["user-agent"],obj=JSON.parse($response.body);
 
-const obj = JSON.parse($response.body);
+obj.Attention="Chúc mừng bạn! Vui lòng không bán hoặc chia sẻ cho người khác!";
 
-// 1. Tạo dữ liệu gói Gold giả lập (Siêu Vip)
-const goldData = {
-  "expires_date": "2099-09-09T09:09:09Z",
-  "original_purchase_date": "2023-09-09T09:09:09Z",
-  "purchase_date": "2023-09-09T09:09:09Z",
-  "ownership_type": "PURCHASED",
-  "store": "app_store"
+// Đã sửa ngày mua (original_purchase_date) về năm 2003
+var ohoang7={
+    is_sandbox:!1,
+    ownership_type:"PURCHASED",
+    billing_issues_detected_at:null,
+    period_type:"normal",
+    expires_date:"2099-12-18T01:04:17Z", // Ngày hết hạn giữ nguyên 2099 để dùng vĩnh viễn
+    grace_period_expires_date:null,
+    unsubscribe_detected_at:null,
+    original_purchase_date:"2003-07-28T01:04:18Z", // Sửa thành 2003
+    purchase_date:"2003-07-28T01:04:17Z", // Sửa thành 2003
+    store:"app_store"
 };
 
-const productID = "com.locket.gold.yearly";
+var vuong2023={
+    grace_period_expires_date:null,
+    purchase_date:"2003-07-28T01:04:17Z", // Sửa thành 2003
+    product_identifier:"com.ohoang7.premium.yearly",
+    expires_date:"2099-12-18T01:04:17Z"
+};
 
-// 2. Kiểm tra và tiêm thuốc (Inject)
-if (obj && obj.subscriber) {
-  
-  // A. Kích hoạt Subscription
-  obj.subscriber.subscriptions = obj.subscriber.subscriptions || {};
-  obj.subscriber.subscriptions[productID] = goldData;
-
-  // B. Kích hoạt Entitlements (Quyền hạn)
-  // Locket thường check 1 trong các key này, ta kích hoạt TẤT CẢ.
-  obj.subscriber.entitlements = obj.subscriber.entitlements || {};
-  
-  const entitlementKeys = ["Gold", "Locket Gold", "premium", "pro"];
-  
-  entitlementKeys.forEach(key => {
-    obj.subscriber.entitlements[key] = {
-      "product_identifier": productID,
-      ...goldData
-    };
-  });
-}
-
-// 3. Trả về kết quả đã hack
-$done({ body: JSON.stringify(obj) });
+const match=Object.keys(mapping).find(e=>ua.includes(e));if(match){let[e,s]=mapping[match];s?(vuong2023.product_identifier=s,obj.subscriber.subscriptions[s]=ohoang7):obj.subscriber.subscriptions["com.ohoang7.premium.yearly"]=ohoang7,obj.subscriber.entitlements[e]=vuong2023}else obj.subscriber.subscriptions["com.ohoang7.premium.yearly"]=ohoang7,obj.subscriber.entitlements.pro=vuong2023;$done({body:JSON.stringify(obj)});
